@@ -1,0 +1,31 @@
+fmod PATIENT is 
+    --- Patient module
+    protecting NAT .
+	protecting RAT .
+	protecting STRING .
+    sorts  Patients Patient Sensors PatientSSN PatientName PatientAge ICUType .
+    subsort Nat < PatientSSN .
+    subsort String < PatientName .
+    subsort Nat < PatientAge .
+    subsort String < ICUType .
+
+    vars pSSN1 pSSN2 pSSN3 : PatientSSN .
+    vars pName1 pName2 pName3 : PatientName .
+    vars pAge1 pAge2 pAge3 : PatientAge .
+    var pSSN : PatientSSN .
+    var pName : PatientName .
+    var pAge : PatientAge .
+    var s : Sensors .
+    var patientsList : Patients .
+
+    op patient : PatientSSN PatientName PatientAge -> Patient .
+
+    --- --- add a patient to the database
+    --- op addPatient : PatientName -> Patients .
+    --- eq addPatient(id, name, patients) = patients U {id, name} .
+
+    --- get the name of a patient
+    op getName : Patient -> PatientName .
+    eq getName(patient(pSSN,pName,pAge)) = pName .
+
+endfm

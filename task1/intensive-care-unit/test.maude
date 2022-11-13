@@ -1,0 +1,34 @@
+load icu.maude .
+
+
+fmod TEST is
+    protecting ICU .
+    protecting PATIENT .
+
+    --- define env
+    --- op testPatients : -> Patients .
+
+    op testPatientOne : -> Patient .
+    eq testPatientOne = patient(1, "John", 20) .
+
+    op testPatientTwo : -> Patient .
+    eq testPatientTwo = patient(2, "Jane", 25) .
+
+    op testIcu1 : -> ICU .
+    eq testIcu1 = icu("Psychiatric intensive care unit", pList(testPatientOne, pList)) .
+
+    op testIcu2 : -> ICU .
+    eq testIcu2 = icu("Trauma intensive care unit", pList(testPatientTwo, pList)) .
+
+    op testIcus : -> ICUs .
+    eq testIcus = icus(testIcu1, icus(testIcu2, icus)) .
+
+
+    --- show usage
+    op getTestPatientOneName : -> PatientName .
+    eq getTestPatientOneName = getName(testPatientOne) .
+
+
+
+
+endfm

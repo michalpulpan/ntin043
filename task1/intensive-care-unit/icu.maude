@@ -1,0 +1,24 @@
+load patient.maude .
+
+fmod ICU is 
+    --- ICU module
+    protecting PATIENT .
+
+    sorts ICUs ICU .
+    vars icuType icuType2 icuType3 : ICUType .
+    var p : Patient .
+    var plist plist2 : Patients .
+    var icuList : ICUs .
+
+    op pList : Patient Patients -> Patients .
+    op pList : -> Patients .
+    --- add new patient
+    op addPatient : Patient ICU -> Patients .
+    eq addPatient(p,icu(icuType, plist)) = pList(p,plist) .
+    --- ICU init
+    op icu : ICUType Patients -> ICU .
+    op icus : ICU ICUs -> ICUs .
+    op icus : -> ICUs .
+    
+
+endfm
