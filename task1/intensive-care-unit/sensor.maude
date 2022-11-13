@@ -1,14 +1,49 @@
-fmod SESNSOR is:
+fmod SENSOR is
     --- Sensor is a ICU device hooked up to the patient and is used to
     --- measure the patient's vital signs. The sensor have defined minimal
     --- and maximal values for each vital sign. Since those values are 
     --- different for each patient (age, health condition, etc.).
-    sorts ID, Type Min Max Value .
-    subsort Nat < ID .
+    protecting NAT .
+	protecting RAT .
+	protecting STRING .
+    
+    --- sort Sensor .
+    sorts Sensor ID Type Min Max Value .
+    subsort Int < ID .
     subsort String < Type .
     subsort Int < Min .
     subsort Int < Max .
     subsort Int < Value .
+
+    --- var sId : Int .
+    --- var sType : String .
+    --- var sMin : Int .
+    --- var sMax : Int .
+    --- var sValue : Int .
+    var s : Sensor .
+
+
+    var sId : ID .
+    var sType : Type .
+    var sMin : Min .
+    var sMax : Max .
+    var sValue : Value .
+
+    --- var v: Value .
+
+    --- here will be initialization
+    op sensor : ID Type Min Max -> Sensor .
+    op sensor : ID Type Min Max Value -> Sensor .
+    --- here will be the "set sensor value" with checking min, max and returning 
+    --- some status code
+    --- here will be the "get sensor value" with checking min, max and returning
+    --- Sensor value setter
+    op setSensorValue : Sensor Value -> Sensor .
+    --- TODO: control min, max or make it sepperate function???
+    eq setSensorValue(sensor(sId, sType, sMin, sMax), sValue) = sensor(sId, sType, sMin, sMax, sValue) .
+    --- Sensor value getter
+    op getSensorValue : Sensor -> Value .
+    eq getSensorValue(sensor(sId, sType, sMin, sMax, sValue)) = sValue .
 
     
 
