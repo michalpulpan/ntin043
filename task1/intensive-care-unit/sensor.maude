@@ -1,0 +1,15 @@
+fmod SESNSOR is:
+    --- Sensor is a ICU device hooked up to the patient and is used to
+    --- measure the patient's vital signs. The sensor have defined minimal
+    --- and maximal values for each vital sign. Since those values are 
+    --- different for each patient (age, health condition, etc.).
+    sorts ID, Type Min Max Value .
+    subsort Nat < ID .
+    subsort String < Type .
+    subsort Int < Min .
+    subsort Int < Max .
+    subsort Int < Value .
+
+    
+
+endfm

@@ -6,7 +6,6 @@ fmod TEST is
     protecting PATIENT .
 
     --- define env
-    --- op testPatients : -> Patients .
 
     op testPatientOne : -> Patient .
     eq testPatientOne = patient(1, "John", 20) .
@@ -23,11 +22,13 @@ fmod TEST is
     op testIcus : -> ICUs .
     eq testIcus = icus(testIcu1, icus(testIcu2, icus)) .
 
-
     --- show usage
+    --- get patient
     op getTestPatientOneName : -> PatientName .
     eq getTestPatientOneName = getName(testPatientOne) .
-
+    --- get icu
+    op getTestIcu1ByName : -> ICU .
+    eq getTestIcu1ByName = getICU("Psychiatric intensive care unit", testIcus) .
 
 
 

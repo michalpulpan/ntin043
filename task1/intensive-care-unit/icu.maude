@@ -1,8 +1,11 @@
 load patient.maude .
+load sensor.maude .
 
 fmod ICU is 
     --- ICU module
     protecting PATIENT .
+    protecting SENSOR .
+
 
     sorts ICUs ICU .
     vars icuType icuType2 icuType3 : ICUType .
@@ -19,6 +22,16 @@ fmod ICU is
     op icu : ICUType Patients -> ICU .
     op icus : ICU ICUs -> ICUs .
     op icus : -> ICUs .
+    --- get ICU from it's type
+    op getICU : ICUType ICUs -> ICU .
+    eq getICU(icuType, icus(icu(icuType2, plist), icuList)) = 
+        if icuType == icuType2 
+            then icu(icuType, plist) 
+        else getICU(icuType, icuList) 
+        fi .
+
+    
+
     
 
 endfm
