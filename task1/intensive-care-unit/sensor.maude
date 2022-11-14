@@ -8,43 +8,62 @@ fmod SENSOR is
 	protecting STRING .
     
     --- sort Sensor .
-    sorts Sensor ID Type Min Max Value .
-    subsort Int < ID .
-    subsort String < Type .
-    subsort Int < Min .
-    subsort Int < Max .
-    subsort Int < Value .
+    sorts Sensor SensorID SensorType SensorMin SensorMax SensorValue .
+    sort SensorStatus .
 
-    --- var sId : Int .
-    --- var sType : String .
-    --- var sMin : Int .
-    --- var sMax : Int .
-    --- var sValue : Int .
+    subsort Int < SensorID .
+    subsort String < SensorType .
+    subsort Rat < SensorMin .
+    subsort Rat < SensorMax .
+    subsort Rat < SensorValue .
+    subsort String < SensorStatus .
+
     var s : Sensor .
 
 
-    var sId : ID .
-    var sType : Type .
-    var sMin : Min .
-    var sMax : Max .
-    var sValue : Value .
+    var sId : SensorID .
+    var sType : SensorType .
+    var sMin : SensorMin .
+    var sMax : SensorMax .
+    var sValue : SensorValue .
+    var status : SensorStatus .
+    var st : SensorStatus .
 
-    --- var v: Value .
+    op sensorStatus : SensorStatus -> SensorStatus .
+	eq sensorStatus(st) = st .
+
+    --- var v: SensorValue .
 
     --- here will be initialization
-    op sensor : ID Type Min Max -> Sensor .
-    op sensor : ID Type Min Max Value -> Sensor .
-    --- here will be the "set sensor value" with checking min, max and returning 
-    --- some status code
-    --- here will be the "get sensor value" with checking min, max and returning
+    op sensor : SensorID SensorType SensorMin SensorMax -> Sensor .
+    op sensor : SensorID SensorType SensorMin SensorMax SensorValue -> Sensor .
+    op sensor : SensorID SensorType SensorMin SensorMax SensorValue SensorStatus -> Sensor .
     --- Sensor value setter
-    op setSensorValue : Sensor Value -> Sensor .
-    --- TODO: control min, max or make it sepperate function???
-    eq setSensorValue(sensor(sId, sType, sMin, sMax), sValue) = sensor(sId, sType, sMin, sMax, sValue) .
+    op setSensorValue : Sensor SensorValue -> Sensor .
+    eq setSensorValue(sensor(sId, sType, sMin, sMax), sValue) = 
+        if sValue < sMin then
+            sensor(sId, sType, sMin, sMax, sValue, "LOW")
+        else
+            if sValue > sMax then
+                sensor(sId, sType, sMin, sMax, sValue, "HIGH")
+            else
+                sensor(sId, sType, sMin, sMax, sValue, "OK")
+            fi
+        fi .
     --- Sensor value getter
-    op getSensorValue : Sensor -> Value .
+    op getSensorValue : Sensor -> SensorValue .
     eq getSensorValue(sensor(sId, sType, sMin, sMax, sValue)) = sValue .
-
-    
+    --- Sensor status getter
+    op getSensorStatus : Sensor -> SensorStatus .
+    eq getSensorStatus(sensor(sId, sType, sMin, sMax, sValue)) = 
+        if sValue < sMin then
+            sensorStatus("LOW")
+        else
+            if sValue > sMax then
+                sensorStatus("HIGH")
+            else
+                sensorStatus("OK")
+            fi
+        fi .
 
 endfm

@@ -1,8 +1,12 @@
+load sensor.maude .
+
+
 fmod PATIENT is 
     --- Patient module
     protecting NAT .
 	protecting RAT .
 	protecting STRING .
+    protecting SENSOR .
     sorts  Patients Patient Sensors PatientSSN PatientName PatientAge ICUType .
     subsort Nat < PatientSSN .
     subsort String < PatientName .
@@ -15,17 +19,47 @@ fmod PATIENT is
     var pSSN : PatientSSN .
     var pName : PatientName .
     var pAge : PatientAge .
-    var s : Sensors .
+    vars sl sl2 : Sensors .
+    vars s s2 : Sensor .
     var patientsList : Patients .
 
     op patient : PatientSSN PatientName PatientAge -> Patient .
-
-    --- --- add a patient to the database
-    --- op addPatient : PatientName -> Patients .
-    --- eq addPatient(id, name, patients) = patients U {id, name} .
+    op patient : PatientSSN PatientName PatientAge Sensors -> Patient .
+    op patients : Patient Patients -> Patients .
+    op patients : Patients Patients -> Patients .
+    op patients : Patients -> Patients .
+    op nilPatient : -> Patient .
+    --- sensors
+    op sensors : Sensor Sensors -> Sensors .
+	op sensors : -> Sensors .
 
     --- get the name of a patient
     op getName : Patient -> PatientName .
     eq getName(patient(pSSN,pName,pAge)) = pName .
+    --- get the age of a patient
+    op getAge : Patient -> PatientAge .
+    eq getAge(patient(pSSN,pName,pAge)) = pAge .
+    --- --- get SSN of a patient
+    op getSSN : Patient -> PatientSSN .
+    eq getSSN(patient(pSSN,pName,pAge)) = pSSN .
+    --- set the name of a patient
+    op setName : Patient PatientName -> Patient .
+    eq setName(patient(pSSN,pName,pAge), pName2) = patient(pSSN, pName2, pAge) .
+    --- set the age of a patient
+    op setAge : Patient PatientAge -> Patient .
+    eq setAge(patient(pSSN,pName,pAge), pAge2) = patient(pSSN, pName, pAge2) .
+    --- --- get SSN of a patient
+    op setSSN : Patient PatientSSN -> Patient .
+    eq setSSN(patient(pSSN,pName,pAge), pSSN2) = patient(pSSN2, pName, pAge) .
+    --- sensor list of a patient
+    op getSensorList : Patient -> Sensors .
+    eq getSensorList(patient(pSSN,pName,pAge, sl)) = sl .
+    --- add a sensor to a patient
+    op addSensor : Patient Sensor Sensors -> Patient .
+    eq addSensor(patient(pSSN,pName,pAge), s2, sl) = patient(pSSN, pName, pAge, sensors(s2, sl)) .
+    --- set sensor list of a patient
+    op setSensorList : Patient Sensors -> Patient .
+    eq setSensorList(patient(pSSN,pName,pAge), sl) = patient(pSSN, pName, pAge, sl) .
+
 
 endfm

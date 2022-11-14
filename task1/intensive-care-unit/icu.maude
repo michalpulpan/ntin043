@@ -7,17 +7,28 @@ fmod ICU is
     protecting SENSOR .
 
 
-    sorts ICUs ICU .
+    sorts ICUs ICU Action .
+    subsort String < Action .
     vars icuType icuType2 icuType3 : ICUType .
     var p : Patient .
     var plist plist2 : Patients .
     var icuList : ICUs .
+    var sl : Sensors .
+    var pSSN1 : PatientSSN .
+    var pName1 : PatientName .
+    var pAge1 : PatientAge .
+    var sensorId : SensorID .
+    var sensorType : SensorType .
+    var sensorValue : SensorValue .
+    var sensorMin : SensorMin .
+    var sensorMax : SensorMax .
+    var sensorList : Sensors .
+    var a : Action .
 
-    op pList : Patient Patients -> Patients .
-    op pList : -> Patients .
-    --- add new patient
-    op addPatient : Patient ICU -> Patients .
-    eq addPatient(p,icu(icuType, plist)) = pList(p,plist) .
+    --- Action is a sort of actions that can be performed based on a result of a sensor
+    op action : Action -> Action .
+    eq action(a) = a .
+
     --- ICU init
     op icu : ICUType Patients -> ICU .
     op icus : ICU ICUs -> ICUs .
@@ -29,9 +40,127 @@ fmod ICU is
             then icu(icuType, plist) 
         else getICU(icuType, icuList) 
         fi .
-
+    --- patient list operations
+    op pList : Patient Patients -> Patients .
+    op pList : -> Patients .
+    --- add new patient
+    op addPatient : Patient ICU -> Patients .
+    eq addPatient(p,icu(icuType, plist)) = pList(p,plist) .
+    --- get patients
+    op getPatients : ICU -> Patients .
+    eq getPatients(icu(icuType, plist)) = plist .
+    --- remove patient
+    op removePatient : PatientSSN Patients -> Patients .
+    eq removePatient(pSSN1, patients(p, plist)) = 
+        if pSSN1 == getSSN(p) 
+            then plist
+        else removePatient(pSSN1, plist) 
+        fi .
+    --- attach sensor to a patient
+    op attachSensor : Patient Sensor Sensors -> Patient .
+    eq attachSensor(patient(pSSN1, pName1, pAge1), sensor(sensorId, sensorType, sensorMin, sensorMax), sl) = 
+        addSensor(patient(pSSN1, pName1, pAge1), sensor(sensorId, sensorType, sensorMin, sensorMax), sl) .
     
-
+    --- ICU operations
+    --- handle sensor value for a patient in ICU
+    op handleSensorValue : Sensor Patient ->  Action .
+    eq handleSensorValue (sensor(sensorId, sensorType, sensorMin, sensorMax, sensorValue), patient(pSSN1, pName1, pAge1)) = 
+        --- im sorry for this absolutely disgusting nesting but else-if doesn't seem to work....
+        if sensorType == "heartRate" 
+            then if getSensorStatus(sensor(sensorId, sensorType, sensorMin, sensorMax, sensorValue)) == "LOW"
+                then action("heartRateLow")
+            else 
+                if getSensorStatus(sensor(sensorId, sensorType, sensorMin, sensorMax, sensorValue)) == "HIGH"
+                    then action("heartRateHigh") 
+                else
+                    action("heartRateNormal")
+                fi
+            fi
+        else
+            if sensorType == "bloodPressureSystolic"
+                then if getSensorStatus(sensor(sensorId, sensorType, sensorMin, sensorMax, sensorValue)) == "LOW"
+                    then action("bloodPressureSystolicLow")
+                else 
+                    if getSensorStatus(sensor(sensorId, sensorType, sensorMin, sensorMax, sensorValue)) == "HIGH"
+                        then action("bloodPressureSystolicHigh") 
+                    else
+                        action("bloodPressureSystolicNormal")
+                    fi
+                fi
+            else
+                if sensorType == "bloodPressureDiastolic"
+                    then if getSensorStatus(sensor(sensorId, sensorType, sensorMin, sensorMax, sensorValue)) == "LOW"
+                        then action("bloodPressureDiastolicLow")
+                    else 
+                        if getSensorStatus(sensor(sensorId, sensorType, sensorMin, sensorMax, sensorValue)) == "HIGH"
+                            then action("bloodPressureDiastolicHigh") 
+                        else
+                            action("bloodPressureDiastolicNormal")
+                        fi
+                    fi
+                else 
+                    if sensorType == "temperature"
+                        then if getSensorStatus(sensor(sensorId, sensorType, sensorMin, sensorMax, sensorValue)) == "LOW"
+                            then action("temperatureLow")
+                        else 
+                            if getSensorStatus(sensor(sensorId, sensorType, sensorMin, sensorMax, sensorValue)) == "HIGH"
+                                then action("temperatureHigh") 
+                            else
+                                action("temperatureNormal")
+                            fi
+                        fi
+                    else
+                        action("sensor type not supported, please choose from: heartRate, bloodPressureSystolic, bloodPressureDiastolic or temperature") 
+                    fi
+                fi
+            fi
+        fi .
     
+    --- perform action based on sensor value
+    op performHeartRateAction : Action -> Action .
+    eq performHeartRateAction(action(a)) = 
+        if a == "heartRateLow"
+            then action("injecting atropine")
+        else
+            if a == "heartRateHigh"
+                then action("injecting amiodarone")
+            else
+                action("noAction")
+            fi
+        fi .
+    op performBloodPressureSystolicAction : Action -> Action .
+    eq performBloodPressureSystolicAction(action(a)) = 
+        if a == "bloodPressureSystolicLow"
+            then action("injecting fludrocortisone")
+        else
+            if a == "bloodPressureSystolicHigh"
+                then action("injecting diuretics")
+            else
+                action("noAction")
+            fi
+        fi .
 
+    op performBloodPressureDiastolicAction : Action -> Action .
+    eq performBloodPressureDiastolicAction(action(a)) = 
+        if a == "bloodPressureDiastolicLow"
+            then action("watch for heart failure")
+        else
+            if a == "bloodPressureDiastolicHigh"
+                then action("consult doctor")
+            else
+                action("noAction")
+            fi
+        fi .
+    
+    op performTemperatureAction : Action -> Action .
+    eq performTemperatureAction(action(a)) = 
+        if a == "temperatureLow"
+            then action("increase room temperature")
+        else
+            if a == "temperatureHigh"
+                then action("inject ibuprofen")
+            else
+                action("noAction")
+            fi
+        fi .
 endfm
