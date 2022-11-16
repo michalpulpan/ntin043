@@ -6,7 +6,7 @@ fmod PATIENT is
     protecting NAT .
 	protecting RAT .
 	protecting STRING .
-    protecting SENSOR .
+    extending SENSOR .
     sorts  Patients Patient Sensors PatientSSN PatientName PatientAge ICUType .
     subsort Nat < PatientSSN .
     subsort String < PatientName .
@@ -31,7 +31,8 @@ fmod PATIENT is
     op nilPatient : -> Patient .
     --- sensors
     op sensors : Sensor Sensors -> Sensors .
-	op sensors : -> Sensors .
+	op sensors : Sensors -> Sensors .
+    op sensors : -> Sensors .
 
     --- get the name of a patient
     op getName : Patient -> PatientName .
@@ -57,6 +58,9 @@ fmod PATIENT is
     --- add a sensor to a patient
     op addSensor : Patient Sensor Sensors -> Patient .
     eq addSensor(patient(pSSN,pName,pAge), s2, sl) = patient(pSSN, pName, pAge, sensors(s2, sl)) .
+    --- remove a sensor to a patient
+    op removeSensor : Patient Sensor Sensors -> Patient .
+    eq removeSensor(patient(pSSN,pName,pAge), s2, sl) = patient(pSSN, pName, pAge, sensors(sl)) .
     --- set sensor list of a patient
     op setSensorList : Patient Sensors -> Patient .
     eq setSensorList(patient(pSSN,pName,pAge), sl) = patient(pSSN, pName, pAge, sl) .

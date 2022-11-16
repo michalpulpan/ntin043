@@ -3,8 +3,8 @@ load sensor.maude .
 
 fmod ICU is 
     --- ICU module
-    protecting PATIENT .
-    protecting SENSOR .
+    extending PATIENT .
+    extending SENSOR .
 
 
     sorts ICUs ICU Action .
@@ -60,6 +60,10 @@ fmod ICU is
     op attachSensor : Patient Sensor Sensors -> Patient .
     eq attachSensor(patient(pSSN1, pName1, pAge1), sensor(sensorId, sensorType, sensorMin, sensorMax), sl) = 
         addSensor(patient(pSSN1, pName1, pAge1), sensor(sensorId, sensorType, sensorMin, sensorMax), sl) .
+    --- detach sensor from a patient
+    op detachSensor : Patient Sensor Sensors -> Patient .
+    eq detachSensor(patient(pSSN1, pName1, pAge1), sensor(sensorId, sensorType, sensorMin, sensorMax), sl) = 
+        removeSensor(patient(pSSN1, pName1, pAge1), sensor(sensorId, sensorType, sensorMin, sensorMax), sl) .
     
     --- ICU operations
     --- handle sensor value for a patient in ICU

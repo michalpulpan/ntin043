@@ -5,6 +5,7 @@ fmod SENSOR is
     --- different for each patient (age, health condition, etc.).
     protecting NAT .
 	protecting RAT .
+    protecting FLOAT .
 	protecting STRING .
     
     --- sort Sensor .
@@ -13,9 +14,9 @@ fmod SENSOR is
 
     subsort Int < SensorID .
     subsort String < SensorType .
-    subsort Rat < SensorMin .
-    subsort Rat < SensorMax .
-    subsort Rat < SensorValue .
+    subsort Float < SensorMin .
+    subsort Float < SensorMax .
+    subsort Float < SensorValue .
     subsort String < SensorStatus .
 
     var s : Sensor .

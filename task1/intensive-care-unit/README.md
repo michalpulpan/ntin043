@@ -27,7 +27,7 @@ Intensive Care Unit
 * [`icu.maude`](icu.maude) - základní soubor s definicí modulu ICU
 * [`patient.maude`](patient.maude) - soubor s definicí modulu pacienta
 * [`sensor.maude`](sensor.maude) - soubor s definicí modulu senzoru
-* [`icu-test.maude`](icu-test.maude) - soubor s testy
+* [`test.maude`](test.maude) - soubor s testy
 
 ## Sensor
 Modul Sensor představuje jednotlivé senzory, které měří různé parametry pacienta. Senzor nese informaci o tom, jaký rozsah hodnot považuje za akceptovavatelný (tj. není nutno vykonávat žádnou dodatečnou akci). Senzory jsou definovány jako moduly, které mají následující atributy:
