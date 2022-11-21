@@ -1,3 +1,6 @@
+--- sensor.maude
+--- Michal Pulpan
+
 fmod SENSOR is
     --- Sensor is a ICU device hooked up to the patient and is used to
     --- measure the patient's vital signs. The sensor have defined minimal

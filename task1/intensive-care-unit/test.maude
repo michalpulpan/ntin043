@@ -1,3 +1,6 @@
+--- test.maude
+--- Michal Pulpan
+
 load icu.maude .
 
 

@@ -1,3 +1,6 @@
+--- patient.maude
+--- Michal Pulpan
+
 load sensor.maude .
 
 
