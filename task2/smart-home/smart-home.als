@@ -14,7 +14,7 @@ sig Home {
 // contains a set of all devices in the home
 sig SmartHub {
     id: one ID,
-    devices: set Device,   
+    devices: set Device,
 }
 
 // signature Room represents a room in the home with ID
