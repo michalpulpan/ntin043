@@ -15,7 +15,7 @@ Smart home představuje domácnost s různými senzory v různých místnostech.
   - [Signatura `Room`](#signatura-room)
   - [Signatura `SmartHub`](#signatura-smarthub)
   - [Signatura `Device`](#signatura-device)
-  - [Faktry, Asserty a Predikáty](#faktry-asserty-a-predikáty)
+  - [Fakty, Asserty a Predikáty](#fakty-asserty-a-predikáty)
 
 Základem je signatura `Home` reprezentující domácnost. Každý dům se zkládá z několika pokojů (`Room`) jenž obsahuje chytrá zařízení `Device`. Jednotlivá zařízení jsou připojena k centrálnímu hubu `SmartHub`.
 Dále využijeme prázdnou signaturu `ID` pro identifikaci jednotlivých entit.
@@ -80,5 +80,5 @@ abstract sig Device {
 - `LuxSensorDevice`
   - s atributem `Lux` definující světelnost v luxech.
 
-## Faktry, Asserty a Predikáty
+## Fakty, Asserty a Predikáty
 Druhou částí řešení jsou fakty, asserty a predikáty definované a okomentované přímo v [řešení](smart-home.als).
