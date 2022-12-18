@@ -81,4 +81,4 @@ abstract sig Device {
   - s atributem `Lux` definující světelnost v luxech.
 
 ## Fakty, Asserty a Predikáty
-Druhou částí řešení jsou fakty, asserty a predikáty definované a okomentované přímo v [řešení](smart-home.als).
+Druhou částí řešení jsou fakty, asserty a predikáty definované a okomentované přímo v [řešení](smart-home.als#L103).
