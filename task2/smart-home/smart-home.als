@@ -157,19 +157,19 @@ fact {all d1: LuxSensorDevice | d1.type = SensorType}
 // ******************* Asserts and checks
 // Unique home id
 assert uniqueHomeId {
-    all h1: Home, h2: Home | h1.id != h2.id
+    all h1: Home, h2: Home | h1.id = h2.id => h1 = h2
 }
 // Unique room id
 assert uniqueRoomId {
-    all r1: Room, r2: Room | r1.id != r2.id
+    all r1: Room, r2: Room | r1.id = r2.id => r1 = r2
 }
 // Unique device id
 assert uniqueDeviceId {
-    all d1: Device, d2: Device | d1.id != d2.id
+    all d1: Device, d2: Device | d1.id = d2.id => d1 = d2
 }
 // Unique smart hub id
 assert uniqueSmartHubId {
-    all sh1: SmartHub, sh2: SmartHub | sh1.id != sh2.id
+    all sh1: SmartHub, sh2: SmartHub | sh1.id = sh2.id  => sh1 = sh2
 }
 // One smart hub per home
 assert oneSmartHubPerHome {
